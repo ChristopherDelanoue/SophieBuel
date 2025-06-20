@@ -1,6 +1,7 @@
 let allPhotos = [];
 let categories = [];
 
+
 const gallery = document.querySelector('.gallery');
 
 
@@ -15,13 +16,15 @@ async function getPhotos() {
         addCategoryEventListeners();
     } catch (error) {
         console.error("Erreur lors de la récupération des photos :", error);
+
     }
 }
 
 getPhotos();
 
+
 function createGallery(photosToDisplay) {
-    gallery.innerHTML = ''; /
+    gallery.innerHTML = '';
 
     if (photosToDisplay.length === 0) {
         const noPhotosMessage = document.createElement('p');
@@ -40,9 +43,11 @@ function createGallery(photosToDisplay) {
     });
 }
 
+
 function getCategories() {
     const uniqueCategoryNames = new Set();
     uniqueCategoryNames.add('Tous');
+
 
     allPhotos.forEach(photo => {
         if (photo.category && typeof photo.category.name === 'string') {
@@ -56,9 +61,10 @@ function getCategories() {
     categories.forEach(categoryName => {
         let categoryButton = document.createElement('p');
         categoryButton.textContent = categoryName;
+
         categoryButton.setAttribute('class', 'filter-button');
         if (categoryName === 'Tous') {
-            categoryButton.classList.add('active'); // Ajoute une classe 'active' par défaut au bouton "Tous"
+            categoryButton.classList.add('active');
         }
         filterContainer.appendChild(categoryButton);
     });
@@ -99,28 +105,3 @@ function addCategoryEventListeners() {
 let loginBtn = document.querySelector('#login-btn');
 let main = document.querySelector('main');
 
-function login() {
-    let loginConteneur = document.createElement('div')
-    let login = document.createElement('form');
-    let labelEmail = document.createElement('label');
-    let emailplaceHolder = document.createElement('input');
-    let labelPassword = document.createElement('label');
-    let password = document.createElement('input');
-    password.setAttribute('type', 'password');
-    labelEmail.innerText = "E-mail";
-    labelPassword.innerText = "Mot de passe";
-    login.appendChild(labelEmail);
-    login.appendChild(emailplaceHolder);
-    login.appendChild(labelPassword);
-    login.appendChild(password);
-    loginConteneur.classList.add('login');
-    loginConteneur.classList.add('loginConteneur');
-    loginConteneur.appendChild(login);
-    loginBtn.addEventListener('click', (e) => {
-        loginConteneur.classList.toggle('login-active')
-        loginConteneur.classList.toggle('login');
-        main.appendChild(loginConteneur)
-    })
-}
-
-login()

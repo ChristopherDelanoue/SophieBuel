@@ -34,6 +34,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #FFFEF8;
 }
 ol, ul {
 	list-style: none;
@@ -97,6 +98,15 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+}
+
+a {
+	text-decoration: none;
+	color: #000
+}
+
+a:hover {
+	color: #B1663C;
 }
 
 li:hover {
@@ -223,27 +233,59 @@ nav {
 	transition: all 0.2s ease-in-out;
 }
 
-.login {
-	display: none;
-}
-.login-active {
+#logInForm {
 	display: flex;
-}
-.loginConteneur {
-	display: block;
-	justify-content: center;
-	align-items: center;
 	flex-direction: column;
-	position: absolute;
-	top: 100px;
-	width: 30%;
 	margin: auto;
-	background-color: rgba(155,155,155,0.6);
+	width: 50%;
+	max-width: 380px;
 }
 
-.loginConteneur form{
-	display: flex;
-	flex-direction: column;
-	gap: 40px;
-
+#logInForm h1	{
+	text-align: center;
+	font-weight: 700;
+	font-size: 30px;
+	color: var(--vertPerso);
+	padding: 100px 0px 50px 0px;
 }
+
+#logInForm label {
+	padding-bottom: 10px;
+	color: #3D3D3D;
+	font-family: 'Work Sans', sans-serif;
+	font-weight: 500;
+	font-size: 14px;
+}
+
+#logInForm input {
+	border: none;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+	height: 51px;
+	margin-bottom: 30px;
+}
+
+#motDePasseOublie {
+	margin: 0px;
+	text-align: center;
+	color: #3D3D3D;
+	text-decoration: underline;
+	font-family: 'Work Sans', sans-serif;
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.logInFooter {
+	display: block;
+	width: 100VW;
+	height: 60px;
+	position: absolute;
+	bottom: 0px;
+	right: 10%;
+	padding-bottom: 20px;
+	align-content: center;
+	font-weight: 300;
+	font-size: 14px;
+	font-family: 'Work Sans', sans-serif;
+	color: #000;
+}
+
