@@ -1,38 +1,33 @@
-let allPhotos = []; // On utilise ce tableau pour stocker TOUTES les photos reçues de l'API
-let categories = []; // Pour stocker les noms des catégories uniques
+let allPhotos = [];
+let categories = [];
 
-// Sélectionne la galerie HTML une seule fois
 const gallery = document.querySelector('.gallery');
 
-// Fonction asynchrone pour récupérer les photos
+
 async function getPhotos() {
     try {
         let response = await fetch('http://localhost:5678/api/works');
-        allPhotos = await response.json(); // Stocke toutes les photos ici
+        allPhotos = await response.json();
         console.log("Toutes les photos récupérées :", allPhotos);
 
-        createGallery(allPhotos); // Affiche toutes les photos au chargement
-        getCategories(); // Récupère et affiche les boutons de catégorie
-        addCategoryEventListeners(); // Ajoute les écouteurs aux boutons
+        createGallery(allPhotos);
+        getCategories();
+        addCategoryEventListeners();
     } catch (error) {
         console.error("Erreur lors de la récupération des photos :", error);
-        // Tu peux ajouter un message d'erreur à l'utilisateur ici
     }
 }
 
-// Lance la récupération et l'affichage des photos au démarrage
 getPhotos();
 
-// Fonction pour créer et afficher la galerie
-// Elle prend un tableau de photos à afficher en paramètre
 function createGallery(photosToDisplay) {
-    gallery.innerHTML = ''; // Vide l'intégralité de la galerie avant d'ajouter de nouvelles photos
+    gallery.innerHTML = ''; /
 
     if (photosToDisplay.length === 0) {
         const noPhotosMessage = document.createElement('p');
         noPhotosMessage.textContent = "Aucune œuvre ne correspond à cette catégorie.";
         gallery.appendChild(noPhotosMessage);
-        return; // Sort de la fonction si le tableau est vide
+        return;
     }
 
     photosToDisplay.forEach((photo) => {
@@ -45,25 +40,22 @@ function createGallery(photosToDisplay) {
     });
 }
 
-// Fonction pour récupérer les catégories uniques et créer les boutons
 function getCategories() {
     const uniqueCategoryNames = new Set();
-    uniqueCategoryNames.add('Tous'); // Ajoute 'Tous' en premier
+    uniqueCategoryNames.add('Tous');
 
-    // Parcours toutes les photos pour extraire les noms de catégorie
     allPhotos.forEach(photo => {
         if (photo.category && typeof photo.category.name === 'string') {
             uniqueCategoryNames.add(photo.category.name);
         }
     });
 
-    categories = Array.from(uniqueCategoryNames); // Convertit le Set en tableau
+    categories = Array.from(uniqueCategoryNames);
 
-    let filterContainer = document.querySelector('.filter'); // L'élément HTML où les filtres seront ajoutés
+    let filterContainer = document.querySelector('.filter');
     categories.forEach(categoryName => {
         let categoryButton = document.createElement('p');
         categoryButton.textContent = categoryName;
-        // On donne une classe spécifique pour les boutons de filtre
         categoryButton.setAttribute('class', 'filter-button');
         if (categoryName === 'Tous') {
             categoryButton.classList.add('active'); // Ajoute une classe 'active' par défaut au bouton "Tous"
