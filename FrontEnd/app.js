@@ -1,7 +1,6 @@
 let allPhotos = [];
 let categories = [];
 
-
 const gallery = document.querySelector('.gallery');
 
 
@@ -95,6 +94,7 @@ function addCategoryEventListeners() {
             }
 
             console.log("Photos à afficher :", photosToDisplay);
+            console.log(userId)
             createGallery(photosToDisplay); // Met à jour la galerie avec les photos filtrées
         });
     });

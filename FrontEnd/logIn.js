@@ -1,5 +1,7 @@
 let email = ''
 let password = ''
+let userId = ''
+let userToken = ''
 
 let emailInput = document.querySelector('#email');
 let passwordInput = document.querySelector('#password');
@@ -29,5 +31,8 @@ LogInForm.onsubmit = async (event) => {
         })
     })
     let result = await response.json();
-    console.log(result)
+    userTest = result.userId;
+    userToken = result.token;
+    console.log(`l'utilisateur ${userId} avec le token ${userToken}`);
+    window.location.href = 'index.html'
 }
