@@ -134,3 +134,76 @@ loginBtn.addEventListener('click', (e)=> {
         }
     }
 });
+
+/* modal */
+let modal = null
+
+let aside = document.createElement('aside');
+aside.classList.add('modal');
+aside.setAttribute('id', 'modal1');
+aside.setAttribute('aria-hidden', 'true');
+aside.setAttribute('role', 'dialog');
+aside.style.display = 'none';
+let modalWrapper = document.createElement('div');
+modalWrapper.classList.add('js-modal-stop');
+let modalContent = document.createElement('div');
+modalContent.classList.add('content');
+modalContent.innerHTML = `<h2>Galerie photo</h2>`
+
+modalWrapper.appendChild(modalContent);
+let btnCLoseModal = document.createElement('button');
+btnCLoseModal.innerText = 'X';
+btnCLoseModal.setAttribute('class', 'js-modal-close')
+modalWrapper.appendChild(btnCLoseModal);
+modalWrapper.classList.add('modal-wrapper');
+
+aside.appendChild(modalWrapper);
+document.body.appendChild(aside);
+
+let btnModal = document.querySelector('.js-modal')
+
+btnModal.addEventListener('click', (e) => {
+    openModal(e)
+})
+
+function openModal(event) {
+    event.preventDefault();
+    modal = document.querySelector(event.target.getAttribute('href'));
+    modal.style.display = null;
+    modal.removeAttribute('aria-hidden');
+    modal.setAttribute('aria-modal', 'true');
+    modal.addEventListener('click', closeModal)
+    modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
+}
+
+function closeModal(event) {
+    if (modal === null) return;
+    event.preventDefault();
+    modal.style.display = "none";
+    modal.setAttribute('aria-hidden', 'true');
+    modal.removeAttribute('aria-modal');
+    modal.removeEventListener('click', closeModal)
+    modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
+    modal = null;
+}
+
+function stopPropagation(e) {
+    e.stopPropagation()
+}
+
+window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal(e);
+    }
+});
+
+function modalPhoto(photos) {
+    let photoModalContainer = document.createElement('div');
+    photoModalContainer.style.display = 'grid';
+    photoModalContainer.style.gridTemplate = 'none repeat(5, 1fr)';
+    photos.forEach(photo => {
+        photoModalContainer.appendChild(photo.imageUrl);
+    })
+}
