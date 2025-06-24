@@ -1,8 +1,10 @@
 let allPhotos = [];
 let categories = [];
+let userId = localStorage.userId;
+let userToken = localStorage.userToken;
 
 const gallery = document.querySelector('.gallery');
-
+const login_Text = document.querySelector('#login-text');
 
 async function getPhotos() {
     try {
@@ -13,6 +15,7 @@ async function getPhotos() {
         createGallery(allPhotos);
         getCategories();
         addCategoryEventListeners();
+        loginText(userId)
     } catch (error) {
         console.error("Erreur lors de la récupération des photos :", error);
 
@@ -94,7 +97,7 @@ function addCategoryEventListeners() {
             }
 
             console.log("Photos à afficher :", photosToDisplay);
-            console.log(userId)
+            console.log(userToken)
             createGallery(photosToDisplay); // Met à jour la galerie avec les photos filtrées
         });
     });
@@ -103,5 +106,31 @@ function addCategoryEventListeners() {
 /* login */
 
 let loginBtn = document.querySelector('#login-btn');
-let main = document.querySelector('main');
+let loginLink = document.querySelector('#login-text');
+let loginClass = document.querySelectorAll('.login-class');
+let editionBanner = document.querySelectorAll('#mode-edition');
 
+function loginText(userid) {
+    if (userid && userToken) {
+        loginLink.innerText = "Logout"
+        loginLink.setAttribute('href', 'index.html');
+        //loginClass.forEach(btn => btn.classList.remove('login-class'));
+    } else {
+        loginClass.forEach((btn) => {
+            btn.style.display = 'none';
+        });
+    }
+}
+
+loginBtn.addEventListener('click', (e)=> {
+    if (login_Text.innerText === 'Logout') {
+        if (localStorage.userId !== null) {
+            window.location.reload();
+            localStorage.userId = '';
+            localStorage.userToken = '';
+        } else {
+            window.location.href = 'login.html';
+
+        }
+    }
+});

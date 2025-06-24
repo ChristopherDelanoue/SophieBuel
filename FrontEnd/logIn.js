@@ -31,8 +31,15 @@ LogInForm.onsubmit = async (event) => {
         })
     })
     let result = await response.json();
-    userTest = result.userId;
+    userId = result.userId;
     userToken = result.token;
-    console.log(`l'utilisateur ${userId} avec le token ${userToken}`);
-    window.location.href = 'index.html'
+    if (userId && userToken) {
+        localStorage.setItem('userToken', userToken);
+        localStorage.setItem('userId', userId);
+        console.log(`l'utilisateur : ${userId} avec le toker : ${userToken}`);
+        window.location.href = 'index.html'
+    } else {
+        alert(`Erreur de connecxion merci de vous identifier`)
+    }
 }
+
