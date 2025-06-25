@@ -136,6 +136,7 @@ loginBtn.addEventListener('click', (e)=> {
 });
 
 /* modal */
+
 let modal = null
 
 let aside = document.createElement('aside');
@@ -147,15 +148,18 @@ aside.style.display = 'none';
 let modalWrapper = document.createElement('div');
 modalWrapper.classList.add('js-modal-stop');
 let modalContent = document.createElement('div');
-modalContent.classList.add('content');
+modalContent.classList.add('modalContent');
 modalContent.innerHTML = `<h2>Galerie photo</h2>`
-
 modalWrapper.appendChild(modalContent);
-let btnCLoseModal = document.createElement('button');
-btnCLoseModal.innerText = 'X';
+let btnCLoseModal = document.createElement('div');
+btnCLoseModal.innerHTML = `<i class="fa-regular fa-xmark"></i>`;
 btnCLoseModal.setAttribute('class', 'js-modal-close')
 modalWrapper.appendChild(btnCLoseModal);
 modalWrapper.classList.add('modal-wrapper');
+let photoModalContainer = document.createElement('div');
+photoModalContainer.classList.add('photoModalContainer');
+modalPhoto().then(html => {photoModalContainer.innerHTML = html});
+modalContent.appendChild(photoModalContainer);
 
 aside.appendChild(modalWrapper);
 document.body.appendChild(aside);
@@ -199,11 +203,19 @@ window.addEventListener('keydown', function(e) {
     }
 });
 
-function modalPhoto(photos) {
-    let photoModalContainer = document.createElement('div');
-    photoModalContainer.style.display = 'grid';
-    photoModalContainer.style.gridTemplate = 'none repeat(5, 1fr)';
-    photos.forEach(photo => {
-        photoModalContainer.appendChild(photo.imageUrl);
-    })
+async function modalPhoto() {
+    let imageModalHTML = '';
+    const logoPoubelle = '<i class="fa-regular fa-trash-xmark"></i>'
+    let response  = await fetch('http://localhost:5678/api/works');
+    let photo = await response.json();
+    try {
+        for (let i = 0; i <photo.length; i ++) {
+            //let photoDiv = document.createElement('div');
+            //photoDiv.classList.add('photoSuppression');
+            imageModalHTML += `<img src="${photo[i].imageUrl}" alt="${photo[i].title}">`
+        }
+    } catch(e) {
+        console.log(e);
+    }
+    return imageModalHTML;
 }
