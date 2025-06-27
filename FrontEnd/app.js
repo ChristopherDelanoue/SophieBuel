@@ -214,21 +214,40 @@ window.addEventListener('keydown', function(e) {
 });
 
 async function modalPhoto() {
+        let response  = await fetch('http://localhost:5678/api/works');
+        let photo = await response.json();
+            photo.forEach((img) => {
+                let photoDiv = document.createElement('div');
+                photoDiv.classList.add('photoDiv');
+                photoDiv.innerHTML = `
+                <img src="${img.imageUrl}" alt="${img.name}">
+                <i id="${img.id}" class="fa-solid fa-trash poubelle"></i>
+                `
+            photoModalContainer.append(photoDiv)
+            let poubelleImage = photoDiv.querySelector('.poubelle')
+            poubelleImage.addEventListener('click', (e) => {
+                let deleteImage = fetch(`http://localhost:5678/api/works/${e.target.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': '',
+                    'Authorization': `Bearer ${userToken}`
+                }
+                })
+                console.log(poubelleImage)
+            })
+        })
+}
+
+async function updatePhotoModal() {
     let response  = await fetch('http://localhost:5678/api/works');
     let photo = await response.json();
-        photo.forEach((img) => {
-            let photoDiv = document.createElement('div');
-            photoDiv.classList.add('photoDiv');
-            photoDiv.innerHTML = `
+    photo.forEach((img) => {
+        let photoDiv = document.createElement('div');
+        photoDiv.classList.add('photoDiv');
+        photoDiv.innerHTML = `
             <img src="${img.imageUrl}" alt="${img.name}">
             <i id="${img.id}" class="fa-solid fa-trash poubelle"></i>
             `
-            photoModalContainer.append(photoDiv)
-            let poubelleImage = document.querySelectorAll('.poubelle')
-            poubelleImage.forEach(el => {
-                el.addEventListener('click', (e) => {
-                    console.log(`photo selectionnée :${e.target.id}`);
-                })
-            })
-        })
+    })
+    return photoDiv
 }
