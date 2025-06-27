@@ -158,8 +158,18 @@ modalWrapper.appendChild(btnCLoseModal);
 modalWrapper.classList.add('modal-wrapper');
 let photoModalContainer = document.createElement('div');
 photoModalContainer.classList.add('photoModalContainer');
-modalPhoto().then(html => {photoModalContainer.innerHTML = html});
+modalPhoto()
 modalContent.appendChild(photoModalContainer);
+let divBtn = document.createElement('div');
+divBtn.classList.add('btnDiv');
+let btnAjoutPhoto  = document.createElement('button');
+btnAjoutPhoto.classList.add('buttonFondVert');
+btnAjoutPhoto.innerText = 'Ajouter une photo'
+let line = document.createElement('hr');
+line.classList.add('line');
+divBtn.appendChild(btnAjoutPhoto);
+modalContent.appendChild(line);
+modalContent.appendChild(divBtn);
 
 aside.appendChild(modalWrapper);
 document.body.appendChild(aside);
@@ -204,18 +214,21 @@ window.addEventListener('keydown', function(e) {
 });
 
 async function modalPhoto() {
-    let imageModalHTML = '';
-    const logoPoubelle = '<i class="fa-regular fa-trash-xmark"></i>'
     let response  = await fetch('http://localhost:5678/api/works');
     let photo = await response.json();
-    try {
-        for (let i = 0; i <photo.length; i ++) {
-            //let photoDiv = document.createElement('div');
-            //photoDiv.classList.add('photoSuppression');
-            imageModalHTML += `<img src="${photo[i].imageUrl}" alt="${photo[i].title}">`
-        }
-    } catch(e) {
-        console.log(e);
-    }
-    return imageModalHTML;
+        photo.forEach((img) => {
+            let photoDiv = document.createElement('div');
+            photoDiv.classList.add('photoDiv');
+            photoDiv.innerHTML = `
+            <img src="${img.imageUrl}" alt="${img.name}">
+            <i id="${img.id}" class="fa-solid fa-trash poubelle"></i>
+            `
+            photoModalContainer.append(photoDiv)
+            let poubelleImage = document.querySelectorAll('.poubelle')
+            poubelleImage.forEach(el => {
+                el.addEventListener('click', (e) => {
+                    console.log(`photo selectionnée :${e.target.id}`);
+                })
+            })
+        })
 }
