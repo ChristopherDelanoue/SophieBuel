@@ -387,26 +387,29 @@ nav {
 	height: 70%;
 	width: 80%;
 	flex-wrap: wrap;
-	overflow: scroll;
-	display: flex;
-	gap: 15px;
+	overflow: auto;
+	display: grid;
+	grid-template-columns: repeat(5,calc(100% / 5 - 20px));
+	grid-template-rows: repeat(auto-fill,calc(100% / 3 - 20px));
+	justify-content: center;
+	gap: 20px 10px;
 }
 
 .photoModalContainer .photoDiv{
 	display: flex;
 	position: relative;
-	width: calc(100% / 5 - 15px);
-	height: calc(100% / 3 - 15px);
-	object-fit: contain;
+	object-fit: fill;
 	padding-bottom: 20px;
+	margin:  auto;
 }
 
 .photoDiv img {
-	display: flex;
+	display: block;
 	object-fit: contain;
 	position: relative;
-	height: 100%;
-	width: 100%;
+	width: 89px;
+	height: 109px;
+	justify-content: center;
 }
 
 .buttonFondVert {
@@ -427,25 +430,25 @@ nav {
 	display: block;
 	width: 100%;
 	justify-content: center;
-	bottom: 40px;
 	height: 60px;
 }
 
-.line {
+.btnDiv .line {
 	height: 1px;
 	width: 80%;
 	background: #B3B3B3;
-	margin-top: 50px;
 
 }
 
 .photoModalContainer .photoDiv .poubelle {
-	display: flex;
+	display: fixed;
 	color: #FFFFFF;
-	width:13px;
-	height: 13px;
+	font-size: 10px;
 	position: absolute;
-	top: 10px;
-	right: 20px;
-
+	top: 5px;
+	right: 7px;
+	background: rgba(0, 0, 0, 0.8);
+	padding: 5px;
+	border-radius: 5px;
+	transform: translateY(2px);
 }

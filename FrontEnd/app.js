@@ -139,40 +139,13 @@ loginBtn.addEventListener('click', (e)=> {
 
 let modal = null
 
-let aside = document.createElement('aside');
-aside.classList.add('modal');
-aside.setAttribute('id', 'modal1');
-aside.setAttribute('aria-hidden', 'true');
-aside.setAttribute('role', 'dialog');
-aside.style.display = 'none';
-let modalWrapper = document.createElement('div');
-modalWrapper.classList.add('js-modal-stop');
-let modalContent = document.createElement('div');
-modalContent.classList.add('modalContent');
-modalContent.innerHTML = `<h2>Galerie photo</h2>`
-modalWrapper.appendChild(modalContent);
-let btnCLoseModal = document.createElement('div');
-btnCLoseModal.innerHTML = `<i class="fa-regular fa-xmark"></i>`;
-btnCLoseModal.setAttribute('class', 'js-modal-close')
-modalWrapper.appendChild(btnCLoseModal);
-modalWrapper.classList.add('modal-wrapper');
-let photoModalContainer = document.createElement('div');
-photoModalContainer.classList.add('photoModalContainer');
-modalPhoto()
-modalContent.appendChild(photoModalContainer);
-let divBtn = document.createElement('div');
-divBtn.classList.add('btnDiv');
-let btnAjoutPhoto  = document.createElement('button');
-btnAjoutPhoto.classList.add('buttonFondVert');
-btnAjoutPhoto.innerText = 'Ajouter une photo'
-let line = document.createElement('hr');
-line.classList.add('line');
-divBtn.appendChild(btnAjoutPhoto);
-modalContent.appendChild(line);
-modalContent.appendChild(divBtn);
+function showModal() {
+        modalSuppression();
+        modalAjout()
 
-aside.appendChild(modalWrapper);
-document.body.appendChild(aside);
+}
+
+showModal()
 
 let btnModal = document.querySelector('.js-modal')
 
@@ -201,6 +174,7 @@ function closeModal(event) {
     modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
     modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
     modal = null;
+    location.reload();
 }
 
 function stopPropagation(e) {
@@ -213,9 +187,9 @@ window.addEventListener('keydown', function(e) {
     }
 });
 
-async function modalPhoto() {
-        let response  = await fetch('http://localhost:5678/api/works');
-        let photo = await response.json();
+async function modalPhoto(container) {
+    let response  = await fetch('http://localhost:5678/api/works');
+    let photo = await response.json();
             photo.forEach((img) => {
                 let photoDiv = document.createElement('div');
                 photoDiv.classList.add('photoDiv');
@@ -223,7 +197,7 @@ async function modalPhoto() {
                 <img src="${img.imageUrl}" alt="${img.name}">
                 <i id="${img.id}" class="fa-solid fa-trash poubelle"></i>
                 `
-            photoModalContainer.append(photoDiv)
+            container.append(photoDiv)
             let poubelleImage = photoDiv.querySelector('.poubelle')
             poubelleImage.addEventListener('click', (e) => {
                 let deleteImage = fetch(`http://localhost:5678/api/works/${e.target.id}`, {
@@ -233,10 +207,15 @@ async function modalPhoto() {
                     'Authorization': `Bearer ${userToken}`
                 }
                 })
-                console.log(poubelleImage)
+                if (photoDiv && photoDiv.nodeType === Node.ELEMENT_NODE) {
+                    photoDiv.remove();
+                } else {
+                    console.warn("suppression impossible");
+                }
             })
         })
 }
+
 
 async function updatePhotoModal() {
     let response  = await fetch('http://localhost:5678/api/works');
@@ -250,4 +229,101 @@ async function updatePhotoModal() {
             `
     })
     return photoDiv
+}
+
+function modalSuppression() {
+    console.log(allPhotos)
+    let aside = document.createElement('aside');
+    aside.classList.add('modal');
+    aside.setAttribute('id', 'modal1');
+    aside.setAttribute('aria-hidden', 'true');
+    aside.setAttribute('role', 'dialog');
+    aside.style.display = 'none';
+    let modalWrapper = document.createElement('div');
+    modalWrapper.classList.add('js-modal-stop');
+    let modalContent = document.createElement('div');
+    modalContent.classList.add('modalContent');
+    modalContent.innerHTML = `<h2>Galerie photo</h2>`
+    modalWrapper.appendChild(modalContent);
+    let btnCLoseModal = document.createElement('div');
+    btnCLoseModal.innerHTML = `<i class="fa-regular fa-xmark"></i>`;
+    btnCLoseModal.setAttribute('class', 'js-modal-close')
+    modalWrapper.appendChild(btnCLoseModal);
+    modalWrapper.classList.add('modal-wrapper');
+    let photoModalContainer = document.createElement('div');
+    photoModalContainer.classList.add('photoModalContainer');
+    modalPhoto(photoModalContainer)
+    modalContent.appendChild(photoModalContainer);
+    let divBtn = document.createElement('div');
+    divBtn.classList.add('btnDiv');
+    let btnAjoutPhoto  = document.createElement('button');
+    btnAjoutPhoto.classList.add('buttonFondVert');
+    btnAjoutPhoto.setAttribute('id', 'btnAjoutPhoto');
+    btnAjoutPhoto.innerText = 'Ajouter une photo'
+    /**** a revoir absolument ****/
+    btnAjoutPhoto.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Fermer modal1
+        if (modal) {
+            modal.style.display = "none";
+            modal.setAttribute('aria-hidden', 'true');
+            modal.removeAttribute('aria-modal');
+        }
+
+        // Ouvrir modal2
+        let modal2 = document.getElementById('modal2');
+        modal2.style.display = null;
+        modal2.removeAttribute('aria-hidden');
+        modal2.setAttribute('aria-modal', 'true');
+
+        // Mise à jour de la référence
+        modal = modal2;
+
+        // Réattacher les events sur modal2
+        modal2.addEventListener('click', closeModal)
+        modal2.querySelector('.js-modal-close').addEventListener('click', closeModal);
+        modal2.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
+    });
+    let line = document.createElement('hr');
+    line.classList.add('line');
+    divBtn.appendChild(line);
+    divBtn.appendChild(btnAjoutPhoto);
+    modalContent.appendChild(divBtn);
+
+    aside.appendChild(modalWrapper);
+    document.body.appendChild(aside);
+
+}
+
+function modalAjout() {
+    let aside = document.createElement('aside');
+    aside.classList.add('modal');
+    aside.setAttribute('id', 'modal2');
+    aside.setAttribute('aria-hidden', 'true');
+    aside.setAttribute('role', 'dialog');
+    aside.style.display = 'none';
+    let modalWrapper = document.createElement('div');
+    modalWrapper.classList.add('js-modal-stop');
+    let modalContent = document.createElement('div');
+    modalContent.classList.add('modalContent');
+    modalContent.innerHTML = `<h2>Galerie photo</h2>`
+    modalWrapper.appendChild(modalContent);
+    let btnCLoseModal = document.createElement('div');
+    btnCLoseModal.innerHTML = `<i class="fa-regular fa-xmark"></i>`;
+    btnCLoseModal.setAttribute('class', 'js-modal-close')
+    modalWrapper.appendChild(btnCLoseModal);
+    modalWrapper.classList.add('modal-wrapper');
+    let divBtn = document.createElement('div');
+    let btnAjoutPhoto  = document.createElement('button');
+    btnAjoutPhoto.classList.add('buttonFondVert');
+    btnAjoutPhoto.innerText = 'Ajouter une photo'
+    let line = document.createElement('hr');
+    line.classList.add('line');
+    divBtn.appendChild(line);
+    divBtn.appendChild(btnAjoutPhoto);
+    modalContent.appendChild(divBtn);
+
+    aside.appendChild(modalWrapper);
+    document.body.appendChild(aside);
 }
