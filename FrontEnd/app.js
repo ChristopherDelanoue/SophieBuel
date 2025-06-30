@@ -307,22 +307,35 @@ function modalAjout() {
     modalWrapper.classList.add('js-modal-stop');
     let modalContent = document.createElement('div');
     modalContent.classList.add('modalContent');
-    modalContent.innerHTML = `<h2>Galerie photo</h2>`
+    modalContent.innerHTML = `<h2>Ajout photo</h2>`
     modalWrapper.appendChild(modalContent);
     let btnCLoseModal = document.createElement('div');
     btnCLoseModal.innerHTML = `<i class="fa-regular fa-xmark"></i>`;
     btnCLoseModal.setAttribute('class', 'js-modal-close')
     modalWrapper.appendChild(btnCLoseModal);
     modalWrapper.classList.add('modal-wrapper');
+    let photoAjoutFormulaire = document.createElement('form');
+    let inputAjoutPhoto = document.createElement('input');
+    inputAjoutPhoto.setAttribute('type', 'file');
+    let titreLabel = document.createElement('label');
+    titreLabel.innerText = 'Titre'
+    let photoInputTitre = document.createElement('input');
+    photoInputTitre.classList.add('input-title');
+
+    photoAjoutFormulaire.appendChild(inputAjoutPhoto);
+    photoAjoutFormulaire.appendChild(titreLabel);
+    photoAjoutFormulaire.appendChild(photoInputTitre);
+
     let divBtn = document.createElement('div');
     let btnAjoutPhoto  = document.createElement('button');
     btnAjoutPhoto.classList.add('buttonFondVert');
-    btnAjoutPhoto.innerText = 'Ajouter une photo'
+    btnAjoutPhoto.innerText = 'Valider'
     let line = document.createElement('hr');
     line.classList.add('line');
     divBtn.appendChild(line);
     divBtn.appendChild(btnAjoutPhoto);
-    modalContent.appendChild(divBtn);
+    photoAjoutFormulaire.appendChild(divBtn)
+    modalContent.appendChild(photoAjoutFormulaire);
 
     aside.appendChild(modalWrapper);
     document.body.appendChild(aside);
