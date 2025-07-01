@@ -11,7 +11,6 @@ async function getPhotos() {
         let response = await fetch('http://localhost:5678/api/works');
         allPhotos = await response.json();
         console.log("Toutes les photos récupérées :", allPhotos);
-
         createGallery(allPhotos);
         getCategories();
         addCategoryEventListeners();
@@ -315,16 +314,23 @@ function modalAjout() {
     modalWrapper.appendChild(btnCLoseModal);
     modalWrapper.classList.add('modal-wrapper');
     let photoAjoutFormulaire = document.createElement('form');
+    photoAjoutFormulaire.setAttribute('id', 'photoFormulaireAjout');
     let inputAjoutPhoto = document.createElement('input');
     inputAjoutPhoto.setAttribute('type', 'file');
     let titreLabel = document.createElement('label');
     titreLabel.innerText = 'Titre'
     let photoInputTitre = document.createElement('input');
     photoInputTitre.classList.add('input-title');
+    let categorieLabel = document.createElement('label');
+    categorieLabel.innerTextCatégorie = 'Catégoria'
+    let ajoutPhotoCategorieSelect = document.createElement('option');
+    ajoutPhotoCategorieSelect.innerHTML = ``;
 
     photoAjoutFormulaire.appendChild(inputAjoutPhoto);
     photoAjoutFormulaire.appendChild(titreLabel);
     photoAjoutFormulaire.appendChild(photoInputTitre);
+    photoAjoutFormulaire.appendChild(categorieLabel);
+    photoAjoutFormulaire.appendChild(ajoutPhotoCategorieSelect);
 
     let divBtn = document.createElement('div');
     let btnAjoutPhoto  = document.createElement('button');

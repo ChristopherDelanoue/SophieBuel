@@ -407,8 +407,8 @@ nav {
 	display: block;
 	object-fit: contain;
 	position: relative;
-	width: 89px;
-	height: 109px;
+	width: 100%;
+	height: 100%;
 	justify-content: center;
 }
 
@@ -451,4 +451,9 @@ nav {
 	padding: 5px;
 	border-radius: 5px;
 	transform: translateY(2px);
+}
+
+#photoFormulaireAjout {
+	display: flex;
+	flex-direction: column;
 }
