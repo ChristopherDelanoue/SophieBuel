@@ -1,28 +1,25 @@
 let allPhotos = [];
-let categories = [];
+let categories = [{'id':0, 'name': 'Tous'}];
 let userId = localStorage.userId;
 let userToken = localStorage.userToken;
 
 const gallery = document.querySelector('.gallery');
 const login_Text = document.querySelector('#login-text');
 
-async function getPhotos() {
-    try {
-        let response = await fetch('http://localhost:5678/api/works');
-        allPhotos = await response.json();
-        console.log("Toutes les photos récupérées :", allPhotos);
-        createGallery(allPhotos);
-        getCategories();
-        addCategoryEventListeners();
-        loginText(userId)
-    } catch (error) {
-        console.error("Erreur lors de la récupération des photos :", error);
 
-    }
+function getPhotos() {
+    let response = fetch('http://localhost:5678/api/works')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(photo => {
+                allPhotos.push(photo);
+                createGallery(allPhotos);
+        })
+            loginText(userId)
+    });
 }
-
 getPhotos();
-
+getCategories()
 
 function createGallery(photosToDisplay) {
     gallery.innerHTML = '';
@@ -44,31 +41,25 @@ function createGallery(photosToDisplay) {
     });
 }
 
-
 function getCategories() {
-    const uniqueCategoryNames = new Set();
-    uniqueCategoryNames.add('Tous');
-
-
-    allPhotos.forEach(photo => {
-        if (photo.category && typeof photo.category.name === 'string') {
-            uniqueCategoryNames.add(photo.category.name);
-        }
-    });
-
-    categories = Array.from(uniqueCategoryNames);
-
-    let filterContainer = document.querySelector('.filter');
-    categories.forEach(categoryName => {
-        let categoryButton = document.createElement('p');
-        categoryButton.textContent = categoryName;
-
-        categoryButton.setAttribute('class', 'filter-button');
-        if (categoryName === 'Tous') {
-            categoryButton.classList.add('active');
-        }
-        filterContainer.appendChild(categoryButton);
-    });
+    let response = fetch('http://localhost:5678/api/categories')
+        .then((response) => response.json())
+        .then(cat => {
+            cat.forEach(cat => {
+                categories.push(cat);
+            })
+            let filterContainer = document.querySelector('.filter');
+            categories.forEach(cat => {
+                let categoryButton = document.createElement('p');
+                categoryButton.innerText = `${cat.name}`
+                categoryButton.setAttribute('class', 'filter-button');
+                filterContainer.appendChild(categoryButton);
+                if (cat.name === 'Tous') {
+                    categoryButton.classList.add('active');
+                }
+            })
+        addCategoryEventListeners()
+    })
 }
 
 // Fonction pour ajouter les écouteurs d'événements aux boutons de catégorie
@@ -94,9 +85,6 @@ function addCategoryEventListeners() {
                     return photo.category && photo.category.name === selectedCategoryText;
                 });
             }
-
-            console.log("Photos à afficher :", photosToDisplay);
-            console.log(userToken)
             createGallery(photosToDisplay); // Met à jour la galerie avec les photos filtrées
         });
     });
@@ -125,14 +113,15 @@ loginBtn.addEventListener('click', (e)=> {
     if (login_Text.innerText === 'Logout') {
         if (localStorage.userId !== null) {
             window.location.reload();
-            localStorage.userId = '';
-            localStorage.userToken = '';
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userId');
         } else {
             window.location.href = 'login.html';
 
         }
     }
 });
+
 
 /* modal */
 
@@ -231,7 +220,6 @@ async function updatePhotoModal() {
 }
 
 function modalSuppression() {
-    console.log(allPhotos)
     let aside = document.createElement('aside');
     aside.classList.add('modal');
     aside.setAttribute('id', 'modal1');
@@ -295,7 +283,10 @@ function modalSuppression() {
 
 }
 
+
+
 function modalAjout() {
+    console.log(categories)
     let aside = document.createElement('aside');
     aside.classList.add('modal');
     aside.setAttribute('id', 'modal2');
@@ -315,24 +306,30 @@ function modalAjout() {
     modalWrapper.classList.add('modal-wrapper');
     let photoAjoutFormulaire = document.createElement('form');
     photoAjoutFormulaire.setAttribute('id', 'photoFormulaireAjout');
+    let divAjoutPhoto  = document.createElement('div');
+    divAjoutPhoto.classList.add('divAjoutPhoto');
     let inputAjoutPhoto = document.createElement('input');
     inputAjoutPhoto.setAttribute('type', 'file');
+    inputAjoutPhoto.setAttribute('id', 'inputAjoutPhoto');
+    divAjoutPhoto.appendChild(inputAjoutPhoto);
     let titreLabel = document.createElement('label');
     titreLabel.innerText = 'Titre'
     let photoInputTitre = document.createElement('input');
     photoInputTitre.classList.add('input-title');
     let categorieLabel = document.createElement('label');
-    categorieLabel.innerTextCatégorie = 'Catégoria'
-    let ajoutPhotoCategorieSelect = document.createElement('option');
-    ajoutPhotoCategorieSelect.innerHTML = ``;
+    categorieLabel.innerText = 'Catégorie'
+    let ajoutPhotoCategorieSelect = document.createElement('select');
 
-    photoAjoutFormulaire.appendChild(inputAjoutPhoto);
+    //createOption(ajoutPhotoCategorieSelect)
+
+    photoAjoutFormulaire.appendChild(divAjoutPhoto);
     photoAjoutFormulaire.appendChild(titreLabel);
     photoAjoutFormulaire.appendChild(photoInputTitre);
     photoAjoutFormulaire.appendChild(categorieLabel);
     photoAjoutFormulaire.appendChild(ajoutPhotoCategorieSelect);
 
     let divBtn = document.createElement('div');
+    divBtn.classList.add('btnDiv');
     let btnAjoutPhoto  = document.createElement('button');
     btnAjoutPhoto.classList.add('buttonFondVert');
     btnAjoutPhoto.innerText = 'Valider'
@@ -345,4 +342,13 @@ function modalAjout() {
 
     aside.appendChild(modalWrapper);
     document.body.appendChild(aside);
+}
+
+function createOption(divParente) {
+    categories.forEach(cat => {
+        let option = document.createElement('option');
+        option.innerText = `${categorie.name}`;
+        option.value = `${categorie.name}`;
+        divParente.appendChild(option);
+    })
 }
