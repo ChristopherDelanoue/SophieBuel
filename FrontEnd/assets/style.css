@@ -358,7 +358,7 @@ nav {
 	border-radius: 10px;
 }
 
-.modal-wrapper i{
+.modal-wrapper .fa-xmark{
 	position: absolute;
 	top: 20px;
 	right: 20px;
@@ -460,14 +460,15 @@ nav {
 
 /** ajout photo formulaire **/
 
+
 #modal2 form {
 	display: flex;
 	align-items: start;
-	width: 70%;
+	width: 420px;
 	margin: auto;
 }
 
-#modal2 form input, select{
+#modal2 form .input-title, select{
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
@@ -483,13 +484,66 @@ nav {
 	padding: 30px 0px 15px 0px;
 }
 
+#modal2 .divCustomBtn {
+	position:  relative;
+}
+
 #modal2 .divAjoutPhoto {
+	position:  relative;
 	padding-top: 20px;
 	display: flex;
-	height: 300px;
+	flex-direction: column;
+	height: 170px;
 	background: #E8F1F6;
 	border-radius: 3px;
 	box-shadow: none;
 	width: 100%;
 }
 
+#modal2 option, select {
+	font-size: 14px;
+	font-family: 'Work Sans', sans-serif;
+	font-weight: 400;
+	color: #444444;
+}
+
+.i-ajout {
+	display: flex;
+	position: relative;
+	font-size: 75px;
+	justify-content: center;
+	color: #CBD6DC;
+	padding-bottom: 20px;
+}
+
+#inputAjoutPhoto {
+	opacity: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	top:0;
+	left:0;
+	bottom: 0;
+}
+
+#modal2 .customButton {
+	font-family: 'Work Sans', sans-serif;
+	font-weight: 500;
+	font-size: 14px;
+	color: #306685;
+	background-color: #CBD6DC;
+	padding: 10px 30px;
+	border-radius: 50px;
+	width: 40%;
+	margin:  auto;
+
+}
+
+.descriptionUpload {
+	font-size: 10px;
+	font-family:  'Work Sans', sans-serif;
+	font-weight: 400;
+	color: #444444;
+	padding: 20px;
+}

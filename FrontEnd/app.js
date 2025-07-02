@@ -21,6 +21,8 @@ function getPhotos() {
 getPhotos();
 getCategories()
 
+
+console.log(`categories :  ${categories}`)
 function createGallery(photosToDisplay) {
     gallery.innerHTML = '';
 
@@ -59,6 +61,7 @@ function getCategories() {
                 }
             })
         addCategoryEventListeners()
+        showModal()
     })
 }
 
@@ -133,7 +136,7 @@ function showModal() {
 
 }
 
-showModal()
+//showModal()
 
 let btnModal = document.querySelector('.js-modal')
 
@@ -286,7 +289,6 @@ function modalSuppression() {
 
 
 function modalAjout() {
-    console.log(categories)
     let aside = document.createElement('aside');
     aside.classList.add('modal');
     aside.setAttribute('id', 'modal2');
@@ -308,10 +310,25 @@ function modalAjout() {
     photoAjoutFormulaire.setAttribute('id', 'photoFormulaireAjout');
     let divAjoutPhoto  = document.createElement('div');
     divAjoutPhoto.classList.add('divAjoutPhoto');
+    let iAjoutPhoto = document.createElement('div');
+    iAjoutPhoto.innerHTML = '<i class="fa-solid fa-image"></i>'
+    iAjoutPhoto.setAttribute('class', 'i-ajout');
+    divAjoutPhoto.appendChild(iAjoutPhoto);
     let inputAjoutPhoto = document.createElement('input');
     inputAjoutPhoto.setAttribute('type', 'file');
     inputAjoutPhoto.setAttribute('id', 'inputAjoutPhoto');
     divAjoutPhoto.appendChild(inputAjoutPhoto);
+    let customButton = document.createElement('p');
+    customButton.classList.add('customButton');
+    customButton.innerHTML = '+ Ajouter photo';
+    let divCustomButton = document.createElement('div');
+    divCustomButton.appendChild(customButton);
+    divCustomButton.appendChild(inputAjoutPhoto)
+    divAjoutPhoto.appendChild(divCustomButton);
+    let descriptionUpload = document.createElement('p');
+    descriptionUpload.classList.add('descriptionUpload');
+    descriptionUpload.innerText = `jpg, png: 4mo max`
+    divAjoutPhoto.appendChild(descriptionUpload);
     let titreLabel = document.createElement('label');
     titreLabel.innerText = 'Titre'
     let photoInputTitre = document.createElement('input');
@@ -320,7 +337,7 @@ function modalAjout() {
     categorieLabel.innerText = 'Catégorie'
     let ajoutPhotoCategorieSelect = document.createElement('select');
 
-    //createOption(ajoutPhotoCategorieSelect)
+   createOption(ajoutPhotoCategorieSelect)
 
     photoAjoutFormulaire.appendChild(divAjoutPhoto);
     photoAjoutFormulaire.appendChild(titreLabel);
@@ -345,10 +362,12 @@ function modalAjout() {
 }
 
 function createOption(divParente) {
-    categories.forEach(cat => {
-        let option = document.createElement('option');
-        option.innerText = `${categorie.name}`;
-        option.value = `${categorie.name}`;
-        divParente.appendChild(option);
-    })
+    for (cat of categories) {
+        if (cat.name !== 'Tous') {
+            let option = document.createElement('option');
+            option.value = cat.name;
+            option.innerText = cat.name;
+            divParente.appendChild(option);
+        }
+    }
 }
