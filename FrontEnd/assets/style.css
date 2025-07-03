@@ -385,20 +385,19 @@ nav {
 .photoModalContainer {
 	margin: auto;
 	height: 70%;
-	width: 80%;
+	min-width: 250px;
+	max-width: 600px;
 	flex-wrap: wrap;
-	overflow: auto;
 	display: grid;
-	grid-template-columns: repeat(5,calc(100% / 5 - 20px));
-	grid-template-rows: repeat(auto-fill,calc(100% / 3 - 20px));
-	justify-content: center;
-	gap: 20px 10px;
+	grid-template-columns: repeat(5,calc(100% / 5 - 15px));
+	grid-template-rows: repeat(auto-fill,calc(100% / 3 - 15px));
+	gap: 30px 15px;
 }
 
 .photoModalContainer .photoDiv{
 	display: flex;
 	position: relative;
-	object-fit: fill;
+	object-fit: cover;
 	padding-bottom: 20px;
 	margin:  auto;
 }
@@ -418,7 +417,7 @@ nav {
 	color: white;
 	font-size: 14px;
 	background-color: #1D6154;
-	margin : 2em auto ;
+	margin : 1.5em auto ;
 	min-width:250px;
 	max-width: 45%;
 	text-align: center;
@@ -428,16 +427,16 @@ nav {
 
 .btnDiv {
 	display: block;
+	position: absolute;
 	width: 100%;
-	justify-content: center;
-	height: 60px;
+	bottom: 0;
+	left: 0;
 }
 
 .btnDiv .line {
 	height: 1px;
-	width: 80%;
+	width: 600px;
 	background: #B3B3B3;
-
 }
 
 .photoModalContainer .photoDiv .poubelle {
@@ -464,7 +463,7 @@ nav {
 #modal2 form {
 	display: flex;
 	align-items: start;
-	width: 420px;
+	width: 600px;
 	margin: auto;
 }
 
@@ -546,4 +545,10 @@ nav {
 	font-weight: 400;
 	color: #444444;
 	padding: 20px;
+}
+
+.btnRetour {
+	position: absolute;
+	top: 20px;
+	font-size: 21px;
 }

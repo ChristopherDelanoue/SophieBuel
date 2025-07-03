@@ -172,6 +172,11 @@ function stopPropagation(e) {
     e.stopPropagation()
 }
 
+function retourModal(event) {
+    event.preventDefault();
+    modal.querySelector('btnRetour').removeEventListener('click', closeModal)
+}
+
 window.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeModal(e);
@@ -283,7 +288,6 @@ function modalSuppression() {
 
     aside.appendChild(modalWrapper);
     document.body.appendChild(aside);
-
 }
 
 
@@ -306,6 +310,10 @@ function modalAjout() {
     btnCLoseModal.setAttribute('class', 'js-modal-close')
     modalWrapper.appendChild(btnCLoseModal);
     modalWrapper.classList.add('modal-wrapper');
+    let btnRetour = document.createElement('div');
+    btnRetour.classList.add('btnRetour');
+    btnRetour.innerHTML = `<i class="fa-solid fa-arrow-left"></i>`;
+    modalWrapper.appendChild(btnRetour);
     let photoAjoutFormulaire = document.createElement('form');
     photoAjoutFormulaire.setAttribute('id', 'photoFormulaireAjout');
     let divAjoutPhoto  = document.createElement('div');
@@ -317,6 +325,7 @@ function modalAjout() {
     let inputAjoutPhoto = document.createElement('input');
     inputAjoutPhoto.setAttribute('type', 'file');
     inputAjoutPhoto.setAttribute('id', 'inputAjoutPhoto');
+    inputAjoutPhoto.setAttribute('onchange', 'showFile(this)');
     divAjoutPhoto.appendChild(inputAjoutPhoto);
     let customButton = document.createElement('p');
     customButton.classList.add('customButton');
@@ -329,6 +338,17 @@ function modalAjout() {
     descriptionUpload.classList.add('descriptionUpload');
     descriptionUpload.innerText = `jpg, png: 4mo max`
     divAjoutPhoto.appendChild(descriptionUpload);
+    /* reader
+    function showFile(input) {
+        let file = input.files[0];
+        inputAjoutPhoto.style.opacity = '1';
+        inputAjoutPhoto.style.zIndex = '999';
+        divAjoutPhoto.appendChild(file);
+        alert(`File name: ${file.name}`); // e.g my.png
+        alert(`Last modified: ${file.lastModified}`); // e.g 1552830408824
+    }
+    function showFile(inputAjoutPhoto)
+    fin du reader*/
     let titreLabel = document.createElement('label');
     titreLabel.innerText = 'Titre'
     let photoInputTitre = document.createElement('input');
