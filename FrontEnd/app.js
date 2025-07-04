@@ -318,37 +318,53 @@ function modalAjout() {
     photoAjoutFormulaire.setAttribute('id', 'photoFormulaireAjout');
     let divAjoutPhoto  = document.createElement('div');
     divAjoutPhoto.classList.add('divAjoutPhoto');
-    let iAjoutPhoto = document.createElement('div');
-    iAjoutPhoto.innerHTML = '<i class="fa-solid fa-image"></i>'
-    iAjoutPhoto.setAttribute('class', 'i-ajout');
-    divAjoutPhoto.appendChild(iAjoutPhoto);
+
     let inputAjoutPhoto = document.createElement('input');
     inputAjoutPhoto.setAttribute('type', 'file');
     inputAjoutPhoto.setAttribute('id', 'inputAjoutPhoto');
-    inputAjoutPhoto.setAttribute('onchange', 'showFile(this)');
-    divAjoutPhoto.appendChild(inputAjoutPhoto);
+    inputAjoutPhoto.addEventListener('change', (e) => {
+        showFile(e.target);
+    })
+    let imgAffichagePreview = document.createElement('img')
+    imgAffichagePreview.setAttribute('id', 'preview');
+    imgAffichagePreview.setAttribute('src', '');
+    imgAffichagePreview.style.display = 'none';
+    divAjoutPhoto.appendChild(imgAffichagePreview);
     let customButton = document.createElement('p');
     customButton.classList.add('customButton');
     customButton.innerHTML = '+ Ajouter photo';
     let divCustomButton = document.createElement('div');
+    divCustomButton.classList.add('divCustomButton');
+    divCustomButton.appendChild(inputAjoutPhoto);
+    //divCustomButton.appendChild(customButton);
+    //divCustomButton.appendChild(inputAjoutPhoto)
+    let iconePicture = document.createElement('i');
+    iconePicture.classList.add("fa-solid");
+    iconePicture.classList.add('fa-image');
+    iconePicture.style.color = '#CBD6DC'
+    iconePicture.style.fontSize = '100px'
+    divAjoutPhoto.appendChild(divCustomButton);
+    divCustomButton.appendChild(iconePicture);
     divCustomButton.appendChild(customButton);
     divCustomButton.appendChild(inputAjoutPhoto)
-    divAjoutPhoto.appendChild(divCustomButton);
+
     let descriptionUpload = document.createElement('p');
     descriptionUpload.classList.add('descriptionUpload');
     descriptionUpload.innerText = `jpg, png: 4mo max`
-    divAjoutPhoto.appendChild(descriptionUpload);
-    /* reader
+    divCustomButton.appendChild(descriptionUpload);
     function showFile(input) {
         let file = input.files[0];
-        inputAjoutPhoto.style.opacity = '1';
-        inputAjoutPhoto.style.zIndex = '999';
-        divAjoutPhoto.appendChild(file);
-        alert(`File name: ${file.name}`); // e.g my.png
-        alert(`Last modified: ${file.lastModified}`); // e.g 1552830408824
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                imgAffichagePreview.src = event.target.result;
+                imgAffichagePreview.style.display = 'block';
+                divCustomButton.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
     }
-    function showFile(inputAjoutPhoto)
-    fin du reader*/
+
     let titreLabel = document.createElement('label');
     titreLabel.innerText = 'Titre'
     let photoInputTitre = document.createElement('input');
@@ -383,7 +399,11 @@ function modalAjout() {
 
 function createOption(divParente) {
     for (cat of categories) {
-        if (cat.name !== 'Tous') {
+        if (cat.name === 'Tous') {
+            let option = document.createElement('option');
+            option.innerText = '--- Choisir votre catégorie ---';
+            divParente.appendChild(option);
+        } else {
             let option = document.createElement('option');
             option.value = cat.name;
             option.innerText = cat.name;
