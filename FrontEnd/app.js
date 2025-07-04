@@ -360,6 +360,8 @@ function modalAjout() {
                 imgAffichagePreview.src = event.target.result;
                 imgAffichagePreview.style.display = 'block';
                 divCustomButton.style.display = 'none';
+                photoSelect = file
+                console.log(photoSelect);
             }
             reader.readAsDataURL(file);
         }
@@ -384,7 +386,7 @@ function modalAjout() {
     let divBtn = document.createElement('div');
     divBtn.classList.add('btnDiv');
     let btnAjoutPhoto  = document.createElement('button');
-    btnAjoutPhoto.classList.add('buttonFondVert');
+    //btnAjoutPhoto.classList.add('buttonFondVert');
     btnAjoutPhoto.innerText = 'Valider'
     let line = document.createElement('hr');
     line.classList.add('line');
@@ -395,6 +397,49 @@ function modalAjout() {
 
     aside.appendChild(modalWrapper);
     document.body.appendChild(aside);
+
+    // preparation envoi API
+    let titrePhotoSelect = ''
+    let categorieSelect = ''
+    let photoSelect = null
+
+    photoInputTitre.addEventListener('input', (e) => {
+        titrePhotoSelect = e.target.value;
+    })
+
+    ajoutPhotoCategorieSelect.addEventListener('change', (e) => {
+        categorieSelect = e.currentTarget.value
+    })
+
+    photoAjoutFormulaire.onsubmit = async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData();
+        formData.append('image', photoSelect);
+        formData.append('title', titrePhotoSelect); // tu avais mis "titreLabel" qui n'existe pas
+        formData.append('category', categorieSelect);
+
+        try {
+            const response = await fetch('http://localhost:5678/api/works', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + userToken
+                    // NE PAS mettre 'Content-Type' ici !
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erreur serveur: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Succès :", data);
+        } catch (error) {
+            console.error("Erreur pendant l'envoi :", error);
+        }
+    };
 }
 
 function createOption(divParente) {
@@ -411,3 +456,16 @@ function createOption(divParente) {
         }
     }
 }
+
+//LogInForm.onsubmit = async (event) => {
+//     event.preventDefault();
+//     let response = await fetch('http://localhost:5678/api/users/login', {
+//         method: 'POST',
+//         headers: {
+//             'content-type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//             "email": email,
+//             "password": password
+//         })
+//     })

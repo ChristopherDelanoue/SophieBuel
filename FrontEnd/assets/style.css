@@ -351,10 +351,10 @@ nav {
 .modal-wrapper {
 	position: relative;
 	overflow: auto;
-	width: 50%;
+	width:35%;
 	padding: 20px;
 	background-color: #FFF;
-	height: 70%;
+	height: 50%;
 	border-radius: 10px;
 }
 
@@ -440,7 +440,7 @@ nav {
 }
 
 .photoModalContainer .photoDiv .poubelle {
-	display: fixed;
+	position: fixed;
 	color: #FFFFFF;
 	font-size: 10px;
 	position: absolute;
@@ -486,7 +486,7 @@ nav {
 	position:  relative;
 	display: flex;
 	flex-direction: column;
-	gap: 5vh;
+	gap: 40px;
 	margin:  auto;
 }
 
@@ -498,7 +498,7 @@ nav {
 	position:  relative;
 	display: flex;
 	flex-direction: column;
-	height: 35vh;
+	height: 20vh;
 	background: #E8F1F6;
 	border-radius: 3px;
 	box-shadow: none;
